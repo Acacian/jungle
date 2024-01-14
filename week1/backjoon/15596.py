@@ -1,4 +1,5 @@
 
 def solve(a):
-    sum = a
-    return sum
+    return sum(a)
+
+# 진짜 이게 끝임;
