@@ -1,4 +1,4 @@
-from __future__ import annotations
+#from __future__ import annotations
 import hashlib
 
 class Node:
@@ -14,15 +14,18 @@ class ChainedHash:
 
     def hash_value(self, key):
         if isinstance(key,int):
-            return key % self.capacity
-        return(int(hashlib.sha256(str(key).encode()).hexdigest(), 16) % self.capacity)
+            return key % self.capacity #정수일 경우 나머지 반환
+        return(int(hashlib.sha256(str(key).encode()).hexdigest(), 16) % self.capacity) #정수가 아닐 경우 SHA256해시 함수 사용해
+        # 해싱 후 마찬가지로 capacity의 나머지를 반환
     
     def search(self, key):
         hash = self.hash_value(key)
         p = self.table[hash]
         while p is not None:
             if p.key == key:
+                #일치 시 반환
                 return p.value
+            # 아니면 이동
             p = p.next
 
         return None
@@ -31,10 +34,13 @@ class ChainedHash:
         hash = self.hash_value(key)
         p = self.table[hash]
         while p is not None:
+            #지금 노트 키가 이미 존재하는가?
             if p.key == key:
                 return False
+            # 없다면 다음, 있다면 추가하지 않고 false반환
             p = p.next
 
+        #새로운 노드를 생성하고, 해당 해시값에 있는 버킷의 맨 앞에 삽입
         temp = Node(key, value, self.table[hash])
         self.table[hash] = temp
         return True
@@ -46,11 +52,15 @@ class ChainedHash:
 
         while p is not None:
             if p.key == key:
+                # 이전 노드가 없는 경우 현재 노드 p를 삭제하고, 테이블의 맨 앞을 업데이트
                 if pp is None:
                     self.table[hash] = p.next
                 else:
+                # 만약 이전 노드가 있다면 현재 노드를 삭제하고 이전 노드의 next를 업데이트
                     pp.next = p.next
+                #삭제가 성공적으로 이루어졌음을 나타내기 위해 true를 반환
                 return True
+            #일치하지 않을 시 이전 노드와 현재 노드를 업데이트
             pp = p
             p = p.next
         return False
