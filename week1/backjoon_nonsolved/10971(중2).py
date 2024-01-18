@@ -1,3 +1,5 @@
+# sys.maxsize  = 정수 최대값
+
 import sys
 def dfs(start, now, value, cnt):
     global ans
@@ -6,9 +8,8 @@ def dfs(start, now, value, cnt):
             value += a[now][start]
             if ans > value:
                 ans = value
-        return
-    if value > ans :
-        return
+            else:
+                return
     for i in range(N):
         if not visited[i] and a[now][i]:
             visited[i] = 1

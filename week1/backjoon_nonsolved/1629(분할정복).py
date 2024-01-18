@@ -11,4 +11,4 @@ def multi (a,n):
       else:
           return (tmp  * tmp *a) %c
           
-print(multi(a,b))      
+print(multi(a,b))
