@@ -1,18 +1,19 @@
 import sys
 from collections import deque
+input = sys.stdin.readline
 
 graph = []
-Y , X = map(int, input().split())
 
+Y, X = map(int, input().split())
 for _ in range(Y):
-    graph.append([map(int, input().rstrip())])
+    graph.append(list(map(int, input().rstrip())))
 
 dx = [-1,1,0,0]
 dy = [0,0,-1,1]
 
 def bfs(x,y):
     queue = deque()
-    queue.append(x,y)
+    queue.append((x,y))
     while queue:
         x,y = queue.popleft()
         for i in range(4):
