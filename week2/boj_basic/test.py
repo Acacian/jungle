@@ -1,39 +1,28 @@
-from collections import defaultdict
 import sys
-sys.setrecursionlimit(10**6)
+input = sys.stdin.readline
+import heapq
 
-N = int(input())
-A = list(map(int, list(input())))
+N , M = map(int, input().split())
+graph = [[] for _ in range(N+1)]
+indegree = [0] * (N+1)
 
-net = defaultdict(list)
-route_count = 0
+for _ in range(M):
+    a,b = (map(int, input().split()))
+    graph[a].append(b)
+    indegree[b] += 1
 
-for _ in range(N-1):
-    u, v = map(int, sys.stdin.readline().split())
-    net[u].append(v)
-    net[v].append(u)
-    if A[u-1] == 1 and A[v-1] == 1:
-        route_count += 2 # 실내끼리 인접했을 경우 경로를 2개 더해준다.
-
-def dfs(v):
-    indoor = 0
-    for i in net[v]:
-        if A[i-1] == 0:
-            if i not in visited:
-                visited.add(i)
-                indoor += dfs(i)
-        else: indoor += 1
-    return indoor
-
-visited = set()
+heap = []
+answer = []
 for i in range(1,N+1):
-    indoor = 0
-    if A[i-1] == 0:
-        if i not in visited:
-            visited.add(i)
-            indoor = dfs(i)
+    if indegree[i] == 0:
+        heapq.heappush(heap, i)
 
-    route_count += indoor*(indoor-1)
-
-print(route_count)
-                
+while heap:
+    a = heapq.heappop(heap)
+    answer.append(a)
+    for i in graph[a]:
+        indegree[i] -= 1
+        if indegree[i] == 0:
+            heapq.heappush(heap, i)
+if len(answer) == N:
+    print(*answer)

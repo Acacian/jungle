@@ -9,7 +9,7 @@ queue = deque([])
 for i in range(Z):
     time = []
     for j in range(Y):
-        time.append(list(map(int, input().split())))
+        time.append(map(list, input().split()))
         for k in range(X):
             if time[j][k] == 1:
                 queue.append([i,j,k]) # popleft라서 이 순서가 맞음
